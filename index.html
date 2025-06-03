@@ -32,13 +32,13 @@
         <h2>mOTP Code Generator</h2>
 
         <div>
-            <label>Secret:</label>
+            <label for="secretInput">Secret:</label>
             <input type="password" id="secretInput" />
             <button id="toggleSecretBtn">Show/Hide</button>
         </div>
 
         <div>
-            <label>PIN:</label>
+            <label for="pinInput">PIN:</label>
             <input type="password" id="pinInput" />
             <button id="togglePinBtn">Show/Hide</button>
         </div>
@@ -49,6 +49,8 @@
         <br />
         <a href="https://motp.sourceforge.net/"><p>https://motp.sourceforge.net/</p></a>
         <a href="https://github.com/Its-Just-Nans/motp"><p>https://github.com/Its-Just-Nans/motp</p></a>
+        <a href="./motp.py"><p>./motp.py</p></a>
+        <a href="./motp.sh"><p>./motp.sh</p></a>
 
         <script type="module">
             const secretInput = document.getElementById("secretInput");
