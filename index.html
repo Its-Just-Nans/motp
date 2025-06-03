@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>mOTP code generator</title>
+        <link rel="icon" href="https://n4n5.dev/favicon.ico" />
+        <script src="./md5.js"></script>
+        <style>
+            body {
+                font-family: sans-serif;
+                padding: 20px;
+            }
+            input[type="text"],
+            input[type="password"] {
+                width: 300px;
+                padding: 5px;
+                margin-bottom: 10px;
+            }
+            #codeDisplay,
+            #timeDisplay {
+                font-size: 1.2em;
+                margin: 10px 0;
+                font-family: monospace;
+            }
+            button {
+                padding: 5px 10px;
+                margin-left: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>mOTP Code Generator</h2>
+
+        <div>
+            <label>Secret:</label>
+            <input type="password" id="secretInput" />
+            <button id="toggleSecretBtn">Show/Hide</button>
+        </div>
+
+        <div>
+            <label>PIN:</label>
+            <input type="password" id="pinInput" />
+            <button id="togglePinBtn">Show/Hide</button>
+        </div>
+
+        <div id="timeDisplay">Epoch Time:</div>
+        <div id="codeDisplay">Code:</div>
+        <button id="copyBtn">Copy Code</button>
+        <br />
+        <a href="https://motp.sourceforge.net/"><p>https://motp.sourceforge.net/</p></a>
+        <a href="https://github.com/Its-Just-Nans/motp"><p>https://github.com/Its-Just-Nans/motp</p></a>
+
+        <script type="module">
+            const secretInput = document.getElementById("secretInput");
+            const pinInput = document.getElementById("pinInput");
+            const codeDisplay = document.getElementById("codeDisplay");
+            const timeDisplay = document.getElementById("timeDisplay");
+
+            // Load from localStorage
+            secretInput.value = localStorage.getItem("secret") || "";
+            pinInput.value = localStorage.getItem("pin") || "";
+
+            // Auto-save
+            secretInput.addEventListener("input", () => localStorage.setItem("secret", secretInput.value));
+            pinInput.addEventListener("input", () => localStorage.setItem("pin", pinInput.value));
+
+            function toggleVisibility(id) {
+                const input = document.getElementById(id);
+                input.type = input.type === "password" ? "text" : "password";
+            }
+
+            function generateCode(secret, pin, counter) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(`${counter}${secret}${pin}`);
+                const hashBuffer = md5(data);
+                return hashBuffer;
+            }
+
+            async function update() {
+                const epoch = Math.floor(Date.now() / 1000);
+                const counter = Math.floor(epoch / 10);
+                const isoDate = new Date().toISOString().split(".")[0];
+                timeDisplay.textContent = `Epoch Time: ${epoch} - ${isoDate}`;
+                const secret = secretInput.value;
+                const pin = pinInput.value;
+                if (secret && pin) {
+                    const code = generateCode(secret, pin, counter).substring(0, 6);
+                    codeDisplay.textContent = `Code: ${code}`;
+                    window.currentCode = code;
+                } else {
+                    codeDisplay.textContent = "Code: [Enter secret and pin]";
+                    window.currentCode = "";
+                }
+            }
+
+            function copyCode() {
+                if (window.currentCode) {
+                    if (isSecureContext) {
+                        navigator.clipboard
+                            .writeText(window.currentCode)
+                            .then(() => alert("Code copied to clipboard!"));
+                    } else {
+                        const textArea = document.createElement("textarea");
+                        textArea.value = window.currentCode;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(textArea);
+                    }
+                } else {
+                    alert("No code to copy.");
+                }
+            }
+
+            // Attach event handlers to buttons
+            document.getElementById("toggleSecretBtn").onclick = () => toggleVisibility("secretInput");
+            document.getElementById("togglePinBtn").onclick = () => toggleVisibility("pinInput");
+            document.getElementById("copyBtn").onclick = copyCode;
+
+            // Start loop
+            update();
+            setInterval(update, 1000);
+        </script>
+    </body>
+</html>
