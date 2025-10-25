@@ -4,14 +4,17 @@
 # https://motp.n4n5.dev/
 # https://github.com/Its-Just-Nans/motp
 
+exit_code=0
+
 if [ ! -f "$HOME/motp-hex" ]; then
     echo "$HOME/motp-hex is not found - the MOTP code will be incorrect"
+    exit_code=1
 fi
 
 if [ ! -f "$HOME/motp-pin" ]; then
     echo "$HOME/motp-pin is not found - the MOTP code will be incorrect"
+    exit_code=1
 fi
-
 
 secret=$(cat "$HOME/motp-hex")
 pin=$(cat "$HOME/motp-pin")
@@ -22,3 +25,4 @@ string_to_hash="${counter}${secret}${pin}"
 hash=$(echo -n "$string_to_hash" | md5sum | cut -c1-6)
 
 echo "$hash"
+exit $exit_code
