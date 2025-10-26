@@ -74,7 +74,7 @@ def main():
     pin = None
     if args.p:
         if args.p == "-":
-            secret = input("Enter pin:")
+            pin = input("Enter pin:")
         else:
             pin = args.p
     elif args.file_pin:

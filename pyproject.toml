@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "motp"
-version = "1.0.2"
-description = "motp"
+version = "1.0.3"
+description = "motp generator CLI and library"
 readme = "README.md"
 authors = [{ name = "n4n5", email = "its.just.n4n5@gmail.com" }]
 license = "MIT"
