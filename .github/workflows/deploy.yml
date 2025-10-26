@@ -27,4 +27,4 @@ jobs:
         steps:
             - uses: its-just-nans/deploy-that@latest
               with:
-                language: repo
+                  language: bash

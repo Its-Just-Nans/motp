@@ -1,0 +1,24 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "motp"
+version = "1.0.2"
+description = "motp"
+readme = "README.md"
+authors = [{ name = "n4n5", email = "its.just.n4n5@gmail.com" }]
+license = "MIT"
+license-files = ["LICENSE"]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["motp"]
+requires-python = ">=3.6"
+
+[project.urls]
+Homepage = "https://github.com/Its-Just-Nans/motp"
+"Bug Tracker" = "https://github.com/Its-Just-Nans/motp/issues"
